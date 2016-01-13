@@ -26,6 +26,19 @@
     </script>
   </head>
   <body onload="init();">
+    <input type="text" id="input-message"/>
+    <button type="button" id="send">Send</button>
     <div id="debug"></div>
+    <script type="text/javascript">
+      var sendButton = document.getElementById('send');
+
+      var sendMsg = function() {
+        var message = document.getElementById('input-message').value;
+        var msg = message;
+        ws.send(msg);
+      };
+
+      sendButton.addEventListener('click', sendMsg, false);
+    </script>
   </body>
 </html>
