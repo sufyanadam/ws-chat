@@ -50,10 +50,15 @@ GEM
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.0)
     debug_inspector (0.0.2)
+    em-websocket (0.5.1)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
+    eventmachine (1.0.9)
     execjs (2.6.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    http_parser.rb (0.6.0)
     i18n (0.7.0)
     jbuilder (2.4.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -143,6 +148,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
+  em-websocket
   jbuilder (~> 2.0)
   jquery-rails
   pg (~> 0.15)
