@@ -1,22 +1,29 @@
 require 'em-websocket'
 
-EM.run {
-  EM::WebSocket.run(:host => "0.0.0.0", :port => 8080) do |ws|
-    ws.onopen { |handshake|
-      puts "WebSocket connection open"
+#
+# broadcast all ruby related tweets to all connected users!
+#
 
-      # Access properties on the EM::WebSocket::Handshake object, e.g.
-      # path, query_string, origin, headers
+EventMachine.run {
+  @channel = EM::Channel.new
 
-      # Publish message to the client
-      ws.send "Hello Client, you connected to #{handshake.path}"
+  # @channel.push "#{status['user']['screen_name']}: #{status['text']}"
+  EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080, :debug => true) do |ws|
+
+    ws.onopen {
+      sid = @channel.subscribe { |msg| ws.send msg }
+      @channel.push "#{sid} connected!"
+
+      ws.onmessage { |msg|
+        @channel.push "<#{sid}>: #{msg}"
+      }
+
+      ws.onclose {
+        @channel.unsubscribe(sid)
+      }
     }
 
-    ws.onclose { puts "Connection closed" }
-
-    ws.onmessage { |msg|
-      puts "Recieved message: #{msg}"
-      ws.send "Pong: #{msg}"
-    }
   end
+
+  puts "Server started"
 }
